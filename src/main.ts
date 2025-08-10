@@ -60,7 +60,8 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.rectangle(640, 360, 1280, 720, 0x90C7E5);
+        // Portrait layout: 720x1280
+        this.add.rectangle(360, 640, 720, 1280, 0x90C7E5);
 
         this.score = 0;
         this.scoreBreakdown = [0, 0, 0, 0, 0, 0];
@@ -74,19 +75,23 @@ export class MainScene extends Phaser.Scene {
         this.pointerDownX = 0;
         this.pointerDownY = 0;
 
-        this.waves = this.add.image(640, 360, 'waves');
-        this.waves2 = this.add.image(640, 360, 'waves2');
+        this.waves = this.add.image(360, 640, 'waves');
+        this.waves2 = this.add.image(360, 640, 'waves2');
         
-        this.grid = new HexGrid(this, 5, 8, 0, 0, this.onNewPoints.bind(this));
+        // Grid positioned in center-top area
+        this.grid = new HexGrid(this, 5, 8, 0, 100, this.onNewPoints.bind(this));
         this.trihexDeck = this.createTrihexDeck(25, true);
 
-        this.scoreText = this.add.bitmapText(150, 30, 'font', '0 points', 60);
+        // Score text at top
+        this.scoreText = this.add.bitmapText(360, 30, 'font', '0 points', 50);
+        this.scoreText.setOrigin(0.5, 0);
         this.scoreText.setDepth(4);
         
-        this.rotateLeftButton = new Button(this, 125, 180, 'rotate', this.rotateLeft.bind(this));
+        // Rotate buttons at bottom left and right
+        this.rotateLeftButton = new Button(this, 120, 1150, 'rotate', this.rotateLeft.bind(this));
         this.rotateLeftButton.setDepth(3.5);
         this.rotateLeftButton.setFlipX(true);
-        this.rotateRightButton = new Button(this, 375, 180, 'rotate', this.rotateRight.bind(this));
+        this.rotateRightButton = new Button(this, 600, 1150, 'rotate', this.rotateRight.bind(this));
         this.rotateRightButton.setDepth(3.5);
 
         // Mobile preview rotate icons (initially hidden)
@@ -101,22 +106,26 @@ export class MainScene extends Phaser.Scene {
         this.previewRotateRightIcon.setScale(0.4);
         this.previewRotateRightIcon.setVisible(false);
 
-        this.openHelpButton = new Button(this, 410, 640, 'question', this.openHelp.bind(this));
+        // Help button at bottom center
+        this.openHelpButton = new Button(this, 360, 1200, 'question', this.openHelp.bind(this));
         this.openHelpButton.setDepth(3.5);
 
-        this.closeHelpButton = new Button(this, 1210, 640, 'x', this.closeHelp.bind(this));
+        // Close help button (portrait center)
+        this.closeHelpButton = new Button(this, 360, 1200, 'x', this.closeHelp.bind(this));
         this.closeHelpButton.setDepth(5.1);
         this.closeHelpButton.setVisible(false);
         
-        this.deckCounterText = this.add.bitmapText(240, 620, 'font', String(this.trihexDeck.length), 60)
+        // Deck counter at bottom center-left
+        this.deckCounterText = this.add.bitmapText(300, 1150, 'font', String(this.trihexDeck.length), 50)
         this.deckCounterText.setOrigin(0.5, 0.45);
         this.deckCounterText.setDepth(3.6);
 
-        this.deckCounterImage = this.add.image(240, 620, 'a-shape');
+        this.deckCounterImage = this.add.image(300, 1150, 'a-shape');
         this.deckCounterImage.setDepth(3.5);
         this.deckCounterImage.setAlpha(0.5);
         
-        this.bigPreviewContainer = this.add.container(1050, 325);
+        // Big preview container positioned at bottom right area
+        this.bigPreviewContainer = this.add.container(550, 950);
         this.bigPreviewContainer.setDepth(4);
 
         this.bigPreviewTrihex = [];
@@ -130,50 +139,50 @@ export class MainScene extends Phaser.Scene {
             this.bigPreviewContainer.add(h.propeller);
         }
 
-        this.helpPage = this.add.image(640, 360, 'help-page');
+        // Help page centered
+        this.helpPage = this.add.image(360, 640, 'help-page');
         this.helpPage.setDepth(5);
         this.helpPage.setVisible(false);
 
         this.pickNextTrihex();
 
-
-
-        this.foreground = this.add.image(1600, 360, 'page');
+        // Foreground transition (adjust for portrait)
+        this.foreground = this.add.image(1080, 640, 'page');
         this.foreground.setDepth(3);
 
         this.tweens.add({
             targets: this.foreground,
-            props: { x: 2400 },
+            props: { x: 1800 },
             duration: 400
         });
 
         this.tweens.add({
             targets: this.rotateLeftButton,
-            props: { x: this.rotateLeftButton.x + 800 },
+            props: { x: this.rotateLeftButton.x + 720 },
             duration: 400
         });
 
         this.tweens.add({
             targets: this.openHelpButton,
-            props: { x: this.openHelpButton.x + 800 },
+            props: { x: this.openHelpButton.x + 720 },
             duration: 400
         });
 
         this.tweens.add({
             targets: this.rotateRightButton,
-            props: { x: this.rotateRightButton.x + 800 },
+            props: { x: this.rotateRightButton.x + 720 },
             duration: 400
         });
 
         this.tweens.add({
             targets: this.scoreText,
-            props: { x: this.scoreText.x + 800 },
+            props: { x: this.scoreText.x + 720 },
             duration: 400
         });
 
         this.tweens.add({
             targets: [this.deckCounterText, this.deckCounterImage],
-            props: { x: this.deckCounterText.x + 800 },
+            props: { x: this.deckCounterText.x + 720 },
             duration: 400
         });
 
@@ -335,8 +344,8 @@ export class MainScene extends Phaser.Scene {
             this.tweens.add({
                 targets: this.bigPreviewContainer,
                 props: {
-                    x: 1050,
-                    y: 325,
+                    x: 550,
+                    y: 950,
                     scale: 1
                 },
                 duration: 400
@@ -428,22 +437,22 @@ export class MainScene extends Phaser.Scene {
             message2 = "(This is the highest rank!)"
         }
         
-        this.gameOverText = this.add.bitmapText(1500, 70, 'font', message1, 60);
+        this.gameOverText = this.add.bitmapText(1080, 200, 'font', message1, 50);
         this.gameOverText.setOrigin(0.5);
         this.gameOverText.setDepth(4);
 
-        this.rankText = this.add.bitmapText(1500, 460, 'font', rank, 60);
+        this.rankText = this.add.bitmapText(1080, 700, 'font', rank, 50);
         this.rankText.setOrigin(0.5);
         this.rankText.setDepth(4);
 
-        this.nextRankText = this.add.bitmapText(1500, 520, 'font', message2, 40);
+        this.nextRankText = this.add.bitmapText(1080, 750, 'font', message2, 35);
         this.nextRankText.setOrigin(0.5);
         this.nextRankText.setDepth(4);
 
-        this.playAgainButton = new Button(this, 1400, 630, 'play-again-button', this.playAgain.bind(this));
+        this.playAgainButton = new Button(this, 1080, 900, 'play-again-button', this.playAgain.bind(this));
         this.playAgainButton.setDepth(4);
 
-        this.breakdownContainer = this.add.container(1500, 300);
+        this.breakdownContainer = this.add.container(1080, 500);
         this.breakdownContainer.setDepth(4);
 
         this.breakdownHexes = [];
@@ -481,7 +490,7 @@ export class MainScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: this.gameOverText,
-            props: { x: 1040 },
+            props: { x: 360 },
             delay: 300,
             duration: 300,
             ease: Phaser.Math.Easing.Quadratic.Out
@@ -489,7 +498,7 @@ export class MainScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: this.breakdownContainer,
-            props: { x: 1040 },
+            props: { x: 360 },
             delay: 600,
             duration: 300,
             ease: Phaser.Math.Easing.Quadratic.Out
@@ -497,7 +506,7 @@ export class MainScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: [this.rankText, this.nextRankText],
-            props: { x: 1040 },
+            props: { x: 360 },
             delay: 900,
             duration: 300,
             ease: Phaser.Math.Easing.Quadratic.Out
@@ -505,7 +514,7 @@ export class MainScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: this.playAgainButton,
-            props: { x: 1040 },
+            props: { x: 360 },
             delay: 1200,
             duration: 300,
             ease: Phaser.Math.Easing.Quadratic.Out
@@ -522,7 +531,7 @@ export class MainScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: this.foreground,
-            props: { x: 1600 },
+            props: { x: 1080 },
             duration: 400
         });
 
