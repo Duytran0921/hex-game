@@ -15,5 +15,7 @@ new Phaser.Game({
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         mode: Phaser.Scale.FIT,
+        // Allow Phaser to set parent container (#game) height to 100%
+        expandParent: true,
     },
 });
