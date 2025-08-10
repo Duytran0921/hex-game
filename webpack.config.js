@@ -1,4 +1,5 @@
-require('path');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -6,6 +7,7 @@ module.exports = {
     output: {
         path: require('path').resolve(__dirname, 'dist'),
         filename: "game.js",
+        publicPath: process.env.NODE_ENV === 'production' ? './' : '/dist/',
     },
     module: {
         rules: [
@@ -22,6 +24,17 @@ module.exports = {
         publicPath: '/dist/',
         port: 8001
     },
+    plugins: [
+        ...(process.env.NODE_ENV === 'production' ? [
+            new CopyWebpackPlugin([
+                { from: 'img', to: 'img' },
+                { from: 'font', to: 'font' },
+                { from: 'sfx', to: 'sfx' },
+                { from: 'lib', to: 'lib' },
+                { from: 'index.html', to: 'index.html' }
+            ])
+        ] : [])
+    ],
     resolve: {
         extensions: ['.ts', '.js']
     }
