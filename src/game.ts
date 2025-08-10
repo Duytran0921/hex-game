@@ -3,8 +3,8 @@ import { MenuScene } from './menu';
 import { LoadScene } from './load';
 
 new Phaser.Game({
-    width: 1280,
-    height: 720,
+    width: 720,
+    height: 1280,
     parent: 'game',
     scene: [
         LoadScene,
