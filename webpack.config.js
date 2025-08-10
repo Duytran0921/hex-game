@@ -31,7 +31,15 @@ module.exports = {
                 { from: 'font', to: 'font' },
                 { from: 'sfx', to: 'sfx' },
                 { from: 'lib', to: 'lib' },
-                { from: 'index.html', to: 'index.html' }
+                { 
+                    from: 'index.html', 
+                    to: 'index.html',
+                    transform(content) {
+                        return content.toString()
+                            .replace('src="dist/game.js"', 'src="game.js"')
+                            .replace('src="lib/phaser.min.js"', 'src="lib/phaser.min.js"');
+                    }
+                }
             ])
         ] : [])
     ],
