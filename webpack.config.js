@@ -1,9 +1,10 @@
 require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: './src/game.ts',
     output: {
+        path: require('path').resolve(__dirname, 'dist'),
         filename: "game.js",
     },
     module: {
